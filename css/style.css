@@ -1,0 +1,168 @@
+:root {
+  --cream: #F6ECDD;
+  --cream-deep: #EFE2CF;
+  --ivory: #FFF9F0;
+  --choco: #4A2B1B;
+  --choco-soft: #7A5A47;
+  --orange: #F08A24;
+  --brown: #6E3F25;
+  --brown-press: #5A321C;
+  --star-off: #EAD9C2;
+  --line: #EADBC6;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --font-title: 'Jua', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+  --font-body: 'Gowun Dodum', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; height: 100%; overflow: hidden;
+  background: #EADFCF;
+  color: var(--choco);
+  font-family: var(--font-body);
+  overscroll-behavior: none;
+  touch-action: none;
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-text-size-adjust: 100%;
+}
+button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; touch-action: manipulation; }
+
+#app {
+  position: fixed; left: 50%; top: 0; transform: translateX(-50%);
+  width: min(100vw, calc(100vh * 9 / 16));
+  width: min(100vw, calc(100dvh * 9 / 16));
+  height: 100vh; height: 100dvh;
+  background: var(--cream);
+  overflow: hidden;
+}
+@media (max-aspect-ratio: 10/16) { #app { width: 100vw; } }
+
+#gl {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  display: block; z-index: 1;
+  transition: opacity .35s ease;
+}
+#gl.hide { opacity: 0; }
+
+.screen {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; align-items: stretch;
+  padding: calc(var(--safe-t) + 8px) 22px calc(var(--safe-b) + 22px);
+  opacity: 0; pointer-events: none; visibility: hidden;
+  transition: opacity .35s ease, visibility 0s linear .35s;
+}
+.screen.on { opacity: 1; pointer-events: auto; visibility: visible; transition: opacity .35s ease, visibility 0s; }
+.flex1 { flex: 1 1 auto; }
+
+/* 상단 바 */
+.topbar { height: 52px; display: flex; align-items: center; justify-content: space-between; flex: none; }
+.link-btn { font-family: var(--font-title); font-size: 16px; color: var(--choco-soft); padding: 10px 4px 10px 14px; }
+.icon-btn {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--ivory); box-shadow: 0 2px 6px rgba(110, 63, 37, .10);
+  display: grid; place-items: center;
+}
+.icon-btn svg { width: 22px; height: 22px; fill: none; stroke: var(--choco); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.icon-spacer { width: 42px; }
+.bar-title { margin: 0; font-family: var(--font-title); font-weight: 400; font-size: 22px; }
+
+/* 타이틀 */
+.ob-head { text-align: center; margin-top: 4vh; margin-top: 4dvh; }
+.title { margin: 0; font-family: var(--font-title); font-weight: 400; font-size: clamp(38px, 11.5vw, 50px); letter-spacing: -0.5px; line-height: 1.1; }
+.wave { display: block; margin: 8px auto 0; width: 120px; height: 12px; }
+.wave path { fill: none; stroke: var(--orange); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+.wave.small { width: 56px; height: 9px; margin-top: 4px; }
+.wave.small path { stroke-width: 3; }
+.guide { margin: 18px 0 0; font-size: 17.5px; line-height: 1.5; min-height: 80px; transition: opacity .25s ease; }
+.guide.fade { opacity: 0; }
+.guide em { font-style: normal; color: var(--orange); font-family: var(--font-title); }
+
+.dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 22px; flex: none; }
+.dots i { width: 8px; height: 8px; border-radius: 99px; background: var(--star-off); transition: width .3s ease, background .3s ease; }
+.dots i.on { width: 22px; background: var(--orange); }
+
+/* 버튼 */
+.bottom { flex: none; display: flex; gap: 12px; }
+.btn {
+  flex: 1; height: 58px; border-radius: 20px;
+  font-family: var(--font-title); font-size: 20px;
+  transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
+}
+.btn.primary { background: var(--brown); color: #FFF6EA; box-shadow: 0 6px 14px rgba(110, 63, 37, .22); }
+.btn.primary:active { background: var(--brown-press); transform: translateY(1px) scale(.985); }
+.btn.secondary { background: var(--ivory); color: var(--brown); box-shadow: 0 4px 12px rgba(110, 63, 37, .10), inset 0 0 0 1.5px var(--line); }
+.btn.secondary:active { transform: translateY(1px) scale(.985); }
+.bottom.two .btn { font-size: 18px; }
+
+/* 라면 선택 */
+.sub { text-align: center; margin: 10px 0 14px; font-size: 17px; flex: none; }
+.cards {
+  flex: 1 1 auto; overflow-y: auto; touch-action: pan-y; -webkit-overflow-scrolling: touch;
+  display: flex; flex-direction: column; gap: 11px; padding: 4px 2px 14px; margin: 0 -2px;
+}
+.card {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  min-height: 78px; padding: 8px 16px 8px 8px; border-radius: 22px;
+  background: var(--ivory);
+  box-shadow: 0 3px 10px rgba(110, 63, 37, .08), inset 0 0 0 1.5px var(--line);
+  transition: box-shadow .18s ease, transform .12s ease;
+  flex: none;
+}
+.card:active { transform: scale(.985); }
+.card.sel { box-shadow: 0 4px 14px rgba(240, 138, 36, .20), inset 0 0 0 2.5px var(--orange); }
+.card img, .card .thumb { width: 66px; height: 66px; flex: none; border-radius: 16px; object-fit: cover; background: var(--cream); }
+.card .mid { flex: 1; min-width: 0; }
+.card .name { font-family: var(--font-title); font-size: 19px; display: block; line-height: 1.2; }
+.stars { display: flex; gap: 2px; margin-top: 5px; }
+.stars svg { width: 15px; height: 15px; }
+.stars .on { fill: var(--orange); }
+.stars .off { fill: var(--star-off); }
+.card .best { text-align: right; flex: none; }
+.card .best small { display: block; font-size: 11.5px; color: var(--choco-soft); }
+.card .best b { font-family: var(--font-title); font-weight: 400; font-size: 18px; white-space: nowrap; }
+
+/* 게임 플레이 */
+#s-play { padding: 0; }
+.score { position: absolute; left: 0; right: 0; top: calc(var(--safe-t) + 4.2vh); top: calc(var(--safe-t) + 4.2dvh); text-align: center; pointer-events: none; z-index: 2; }
+.score-num { font-family: var(--font-title); font-size: clamp(40px, 12vw, 52px); line-height: 1; font-variant-numeric: tabular-nums; }
+.score-num small { font-size: .5em; }
+.touch { position: absolute; inset: 0; touch-action: none; z-index: 1; }
+
+/* 결과 */
+.res-head { text-align: center; margin-top: 3.2vh; margin-top: 3.2dvh; flex: none; }
+.res-title { margin: 0; font-family: var(--font-title); font-weight: 400; font-size: clamp(30px, 9vw, 38px); }
+.record {
+  display: inline-flex; align-items: center; gap: 7px; margin-top: 10px;
+  font-family: var(--font-title); font-size: 16px; color: var(--orange);
+  padding: 6px 14px; border-radius: 99px; background: rgba(240, 138, 36, .12);
+  opacity: 0; transform: translateY(6px) scale(.9);
+}
+.record i { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+.record.show { animation: pop .5s .25s cubic-bezier(.3, 1.6, .5, 1) forwards; }
+.record.none { visibility: hidden; }
+@keyframes pop { to { opacity: 1; transform: none; } }
+
+.res-card {
+  flex: none; background: var(--ivory); border-radius: 28px; padding: 22px 22px 18px; margin-bottom: 18px;
+  box-shadow: 0 8px 22px rgba(110, 63, 37, .10), inset 0 0 0 1.5px var(--line);
+  text-align: center;
+}
+.res-label { margin: 0; font-size: 16px; color: var(--choco-soft); }
+.res-num { margin: 6px 0 14px; font-family: var(--font-title); font-size: clamp(54px, 17vw, 68px); line-height: 1; font-variant-numeric: tabular-nums; }
+.res-num small { font-size: .38em; }
+.res-row { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1.5px dashed var(--line); font-size: 15px; }
+.res-name { font-family: var(--font-title); font-size: 17px; }
+.res-best { color: var(--choco-soft); }
+.res-best b { font-family: var(--font-title); font-weight: 400; color: var(--choco); font-size: 17px; margin-left: 4px; }
+
+.fader { position: absolute; inset: 0; z-index: 5; background: var(--cream); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+.fader.on { opacity: 1; }
+
+@media (max-height: 640px) {
+  .card { min-height: 66px; }
+  .card img { width: 54px; height: 54px; }
+  .cards { gap: 8px; }
+  .btn { height: 52px; }
+}

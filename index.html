@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>면발 끊지 마!</title>
+<meta name="description" content="라면 면발을 젓가락으로 천천히 당겨 최대한 길게 뽑아내는 캐주얼 미니게임">
+<meta name="theme-color" content="#F6ECDD">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="면발 끊지 마">
+<!--PWA-->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<!--/PWA-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="gl"></canvas>
+
+  <!-- SCREEN 01 온보딩 -->
+  <section class="screen" id="s-onboard" aria-label="게임 소개">
+    <div class="topbar">
+      <span></span>
+      <button class="link-btn" data-act="skip">건너뛰기</button>
+    </div>
+    <div class="ob-head">
+      <h1 class="title">면발 끊지 마!</h1>
+      <svg class="wave" viewBox="0 0 120 12" aria-hidden="true"><path d="M2 6 Q 9.5 0 17 6 T 32 6 T 47 6 T 62 6 T 77 6 T 92 6 T 107 6 T 118 6" /></svg>
+      <p class="guide" id="ob-text">면발을 천천히 위로 당겨보세요!</p>
+    </div>
+    <div class="flex1"></div>
+    <div class="dots" id="ob-dots"><i class="on"></i><i></i><i></i></div>
+    <div class="bottom">
+      <button class="btn primary" data-act="next" id="ob-next">다음</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 02 라면 선택 -->
+  <section class="screen" id="s-select" aria-label="라면 선택">
+    <div class="topbar">
+      <button class="icon-btn" data-act="back" aria-label="뒤로가기">
+        <svg viewBox="0 0 24 24"><path d="M15 5 L8 12 L15 19" /></svg>
+      </button>
+      <h2 class="bar-title">라면 선택</h2>
+      <span class="icon-spacer"></span>
+    </div>
+    <p class="sub">도전할 라면을 골라보세요!</p>
+    <div class="cards" id="cards"></div>
+    <div class="bottom">
+      <button class="btn primary" data-act="start">시작하기</button>
+    </div>
+  </section>
+
+  <!-- SCREEN 03 게임 플레이 -->
+  <section class="screen" id="s-play" aria-label="게임 플레이">
+    <div class="score">
+      <div class="score-num"><span id="score">0.0</span><small> cm</small></div>
+      <svg class="wave small" viewBox="0 0 60 10" aria-hidden="true"><path d="M2 5 Q 7 0 12 5 T 22 5 T 32 5 T 42 5 T 52 5 T 58 5" /></svg>
+    </div>
+    <div class="touch" id="touch"></div>
+  </section>
+
+  <!-- SCREEN 04 결과 -->
+  <section class="screen" id="s-result" aria-label="게임 결과">
+    <div class="res-head">
+      <h2 class="res-title" id="res-title">면발이 끊어졌어요!</h2>
+      <div class="record" id="res-record"><i></i>최고 기록 갱신!</div>
+    </div>
+    <div class="flex1"></div>
+    <div class="res-card">
+      <p class="res-label">뽑은 면발 길이</p>
+      <p class="res-num"><span id="res-cm">0.0</span><small> cm</small></p>
+      <div class="res-row">
+        <span class="res-name" id="res-name">기본라면</span>
+        <span class="res-best">최고 기록 <b id="res-best">— cm</b></span>
+      </div>
+    </div>
+    <div class="bottom two">
+      <button class="btn primary" data-act="retry">다시하기</button>
+      <button class="btn secondary" data-act="pick">다른 라면 선택</button>
+    </div>
+  </section>
+
+  <div class="fader" id="fader"></div>
+</div>
+
+<!--SCRIPTS-->
+<script src="vendor/three.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/ramen.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/models.js"></script>
+<script src="js/noodle.js"></script>
+<script src="js/stage.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+<!--/SCRIPTS-->
+</body>
+</html>

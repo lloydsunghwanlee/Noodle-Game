@@ -1,0 +1,17 @@
+{
+  "name": "면발 끊지 마!",
+  "short_name": "면발 끊지 마",
+  "description": "라면 면발을 젓가락으로 천천히 당겨 최대한 길게 뽑아내는 캐주얼 미니게임",
+  "lang": "ko",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F6ECDD",
+  "theme_color": "#F6ECDD",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
