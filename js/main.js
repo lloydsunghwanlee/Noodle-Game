@@ -21,6 +21,13 @@
 
   const game = new NG.Game(stage, $('#touch'), {
     onScore(cm) { $('#score').textContent = (Math.floor(cm * 10) / 10).toFixed(1); },
+    onTime(remain) {
+      const s = Math.ceil(remain - 1e-6);
+      const txt = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+      const el = $('#timer');
+      if (el.textContent !== txt) el.textContent = txt;
+      el.classList.toggle('low', remain <= 5);
+    },
     onEnd(res) { showResult(res); },
   });
   NG.game = game;
@@ -47,7 +54,7 @@
   const OB = [
     '면발을 <em>천천히</em> 위로 당겨보세요!',
     '너무 빠르게 당기면<br>면발이 <em>바들바들</em> 떨려요!',
-    '면발이 끊어지기 전에<br>최고 기록에 도전해 보세요!<br>제한 시간은 <em>20초</em>예요.',
+    '면발이 끊어지기 전에<br>최고 기록에 도전해 보세요!<br>제한 시간은 <em>' + NG.CONFIG.timeLimit + '초</em>예요.',
   ];
   let obPage = 0, obT = 0;
   function setObPage(i, instant) {

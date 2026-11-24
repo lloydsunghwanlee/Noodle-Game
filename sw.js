@@ -1,5 +1,5 @@
 /* 오프라인 플레이용 서비스 워커 */
-const VERSION = 'noodle-v1';
+const VERSION = 'noodle-v2';
 const SHELL = [
   './', './index.html', './manifest.webmanifest', './css/style.css',
   './vendor/three.min.js',

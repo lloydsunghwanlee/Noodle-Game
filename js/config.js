@@ -13,8 +13,8 @@
 window.NG = window.NG || {};
 
 NG.CONFIG = {
-  // 한 판 제한 시간(초). 첫 위쪽 드래그 순간부터 계산.
-  timeLimit: 20,
+  // 한 판 제한 시간(초). 첫 위쪽 드래그 순간부터 계산. 플레이 화면 cm 아래에 mm:ss로 표시.
+  timeLimit: 30,
 
   // 화면 높이 1개만큼 위로 드래그했을 때 늘어나는 면발 길이(cm, 게임 내 단위)
   cmPerScreen: 8,
@@ -41,11 +41,12 @@ NG.CONFIG = {
   //  wobbleHz      : 안전 속도 흔들림 주기(Hz)
   //  shakeScale    : 떨림 시각 효과 배율
   difficulty: {
-    basic:   { safeSpeed: 0.95, riseRate: 60,  recoverRate: 50, maxRise: 90,  accelSense: 0.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.0 },
-    sagol:   { safeSpeed: 0.82, riseRate: 70,  recoverRate: 42, maxRise: 100, accelSense: 0.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.05 },
-    spicy:   { safeSpeed: 0.70, riseRate: 80,  recoverRate: 36, maxRise: 110, accelSense: 5.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.15 },
-    jjajang: { safeSpeed: 0.60, riseRate: 95,  recoverRate: 30, maxRise: 120, accelSense: 3.0,  safeWobble: 0.22, wobbleHz: 0.55, shakeScale: 1.2 },
-    bulldak: { safeSpeed: 0.55, riseRate: 100, recoverRate: 26, maxRise: 120, accelSense: 6.0,  safeWobble: 0.08, wobbleHz: 0.8,  shakeScale: 1.45 },
+    // v2: 모든 라면을 한 단계씩 어렵게 (기본←기존 사골, 사골←기존 매운, 매운←기존 짜장, 짜장←기존 불닭) + 매운 볶음면 신규 최고 난이도
+    basic:   { safeSpeed: 0.82, riseRate: 70,  recoverRate: 42, maxRise: 100, accelSense: 0.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.05 },
+    sagol:   { safeSpeed: 0.70, riseRate: 80,  recoverRate: 36, maxRise: 110, accelSense: 5.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.15 },
+    spicy:   { safeSpeed: 0.60, riseRate: 95,  recoverRate: 30, maxRise: 120, accelSense: 3.0,  safeWobble: 0.22, wobbleHz: 0.55, shakeScale: 1.2 },
+    jjajang: { safeSpeed: 0.55, riseRate: 100, recoverRate: 26, maxRise: 120, accelSense: 6.0,  safeWobble: 0.08, wobbleHz: 0.8,  shakeScale: 1.45 },
+    bulldak: { safeSpeed: 0.46, riseRate: 135, recoverRate: 18, maxRise: 150, accelSense: 9.0,  safeWobble: 0.12, wobbleHz: 0.9,  shakeScale: 1.65 }, // 매운 볶음면
   },
 
   // 햅틱(진동) — 지원 기기에서만 동작

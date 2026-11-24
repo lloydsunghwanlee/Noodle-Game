@@ -90,8 +90,6 @@ button { font: inherit; color: inherit; border: 0; background: none; padding: 0;
 .title { margin: 0; font-family: var(--font-title); font-weight: 400; font-size: clamp(38px, 11.5vw, 50px); letter-spacing: -0.5px; line-height: 1.1; }
 .wave { display: block; margin: 8px auto 0; width: 120px; height: 12px; }
 .wave path { fill: none; stroke: var(--orange); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
-.wave.small { width: 56px; height: 9px; margin-top: 4px; }
-.wave.small path { stroke-width: 3; }
 .guide { margin: 18px 0 0; font-size: 17.5px; line-height: 1.5; min-height: 80px; transition: opacity .25s ease; }
 .guide.fade { opacity: 0; }
 .guide em { font-style: normal; color: var(--orange); font-family: var(--font-title); }
@@ -145,6 +143,8 @@ button { font: inherit; color: inherit; border: 0; background: none; padding: 0;
 .score { position: absolute; left: 0; right: 0; top: calc(var(--safe-t) + 4.2vh); top: calc(var(--safe-t) + 4.2dvh); text-align: center; pointer-events: none; z-index: 2; }
 .score-num { font-family: var(--font-title); font-size: clamp(40px, 12vw, 52px); line-height: 1; font-variant-numeric: tabular-nums; }
 .score-num small { font-size: .5em; }
+.timer { margin-top: 8px; font-family: var(--font-title); font-size: clamp(19px, 5.6vw, 24px); line-height: 1; color: var(--choco); font-variant-numeric: tabular-nums; letter-spacing: .5px; transition: color .3s ease; }
+.timer.low { color: #EE9A45; }
 .touch { position: absolute; inset: 0; touch-action: none; z-index: 1; }
 
 /* 결과 */
@@ -228,7 +228,7 @@ button { font: inherit; color: inherit; border: 0; background: none; padding: 0;
   <section class="screen" id="s-play" aria-label="게임 플레이">
     <div class="score">
       <div class="score-num"><span id="score">0.0</span><small> cm</small></div>
-      <svg class="wave small" viewBox="0 0 60 10" aria-hidden="true"><path d="M2 5 Q 7 0 12 5 T 22 5 T 32 5 T 42 5 T 52 5 T 58 5" /></svg>
+      <div class="timer" id="timer" aria-label="남은 시간">00:30</div>
     </div>
     <div class="touch" id="touch"></div>
   </section>
@@ -284,8 +284,8 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
 window.NG = window.NG || {};
 
 NG.CONFIG = {
-  // 한 판 제한 시간(초). 첫 위쪽 드래그 순간부터 계산.
-  timeLimit: 20,
+  // 한 판 제한 시간(초). 첫 위쪽 드래그 순간부터 계산. 플레이 화면 cm 아래에 mm:ss로 표시.
+  timeLimit: 30,
 
   // 화면 높이 1개만큼 위로 드래그했을 때 늘어나는 면발 길이(cm, 게임 내 단위)
   cmPerScreen: 8,
@@ -312,11 +312,12 @@ NG.CONFIG = {
   //  wobbleHz      : 안전 속도 흔들림 주기(Hz)
   //  shakeScale    : 떨림 시각 효과 배율
   difficulty: {
-    basic:   { safeSpeed: 0.95, riseRate: 60,  recoverRate: 50, maxRise: 90,  accelSense: 0.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.0 },
-    sagol:   { safeSpeed: 0.82, riseRate: 70,  recoverRate: 42, maxRise: 100, accelSense: 0.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.05 },
-    spicy:   { safeSpeed: 0.70, riseRate: 80,  recoverRate: 36, maxRise: 110, accelSense: 5.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.15 },
-    jjajang: { safeSpeed: 0.60, riseRate: 95,  recoverRate: 30, maxRise: 120, accelSense: 3.0,  safeWobble: 0.22, wobbleHz: 0.55, shakeScale: 1.2 },
-    bulldak: { safeSpeed: 0.55, riseRate: 100, recoverRate: 26, maxRise: 120, accelSense: 6.0,  safeWobble: 0.08, wobbleHz: 0.8,  shakeScale: 1.45 },
+    // v2: 모든 라면을 한 단계씩 어렵게 (기본←기존 사골, 사골←기존 매운, 매운←기존 짜장, 짜장←기존 불닭) + 매운 볶음면 신규 최고 난이도
+    basic:   { safeSpeed: 0.82, riseRate: 70,  recoverRate: 42, maxRise: 100, accelSense: 0.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.05 },
+    sagol:   { safeSpeed: 0.70, riseRate: 80,  recoverRate: 36, maxRise: 110, accelSense: 5.0,  safeWobble: 0.0,  wobbleHz: 0.0,  shakeScale: 1.15 },
+    spicy:   { safeSpeed: 0.60, riseRate: 95,  recoverRate: 30, maxRise: 120, accelSense: 3.0,  safeWobble: 0.22, wobbleHz: 0.55, shakeScale: 1.2 },
+    jjajang: { safeSpeed: 0.55, riseRate: 100, recoverRate: 26, maxRise: 120, accelSense: 6.0,  safeWobble: 0.08, wobbleHz: 0.8,  shakeScale: 1.45 },
+    bulldak: { safeSpeed: 0.46, riseRate: 135, recoverRate: 18, maxRise: 150, accelSense: 9.0,  safeWobble: 0.12, wobbleHz: 0.9,  shakeScale: 1.65 }, // 매운 볶음면
   },
 
   // 햅틱(진동) — 지원 기기에서만 동작
@@ -375,7 +376,7 @@ NG.RAMEN = [
     toppings: ['veggie'],
   },
   {
-    id: 'bulldak', name: '불닭볶음면', stars: 5, desc: '조금만 빠르게 당겨도 심하게 떨리는 면발',
+    id: 'bulldak', name: '매운 볶음면', stars: 5, desc: '아주 미세한 속도 변화에도 바들바들 떨리는 면발',
     soup: false,
     broth: '#D4401D', brothDeep: '#B9310F',
     noodle: '#E8702A',
@@ -1470,7 +1471,7 @@ NG.ramenById = function (id) {
     constructor(stage, surface, hooks) {
       this.stage = stage;
       this.surface = surface;   // 터치를 받는 요소
-      this.hooks = hooks;       // { onScore(cm), onEnd(result) }
+      this.hooks = hooks;       // { onScore(cm), onTime(remainSec), onEnd(result) }
       this.state = 'idle';
       this.gen = 0;
       this._bind();
@@ -1509,6 +1510,7 @@ NG.ramenById = function (id) {
       this.stage.setRamen(ramen);
       this.stage.setMode('play');
       this.hooks.onScore(0);
+      this.hooks.onTime && this.hooks.onTime(C.timeLimit);
       NG.Sound.setTremble(0);
     }
 
@@ -1593,6 +1595,7 @@ NG.ramenById = function (id) {
       this.stage.tension = this.tension;
       this.stage.height = this.length * C.worldPerCm;
 
+      if (this.hooks.onTime) this.hooks.onTime(Math.max(0, C.timeLimit - this.elapsed));
       this._feedback(dt);
 
       if (this.tension >= C.stages.snap) return this._end('snap');
@@ -1678,6 +1681,13 @@ NG.ramenById = function (id) {
 
   const game = new NG.Game(stage, $('#touch'), {
     onScore(cm) { $('#score').textContent = (Math.floor(cm * 10) / 10).toFixed(1); },
+    onTime(remain) {
+      const s = Math.ceil(remain - 1e-6);
+      const txt = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+      const el = $('#timer');
+      if (el.textContent !== txt) el.textContent = txt;
+      el.classList.toggle('low', remain <= 5);
+    },
     onEnd(res) { showResult(res); },
   });
   NG.game = game;
@@ -1704,7 +1714,7 @@ NG.ramenById = function (id) {
   const OB = [
     '면발을 <em>천천히</em> 위로 당겨보세요!',
     '너무 빠르게 당기면<br>면발이 <em>바들바들</em> 떨려요!',
-    '면발이 끊어지기 전에<br>최고 기록에 도전해 보세요!<br>제한 시간은 <em>20초</em>예요.',
+    '면발이 끊어지기 전에<br>최고 기록에 도전해 보세요!<br>제한 시간은 <em>' + NG.CONFIG.timeLimit + '초</em>예요.',
   ];
   let obPage = 0, obT = 0;
   function setObPage(i, instant) {

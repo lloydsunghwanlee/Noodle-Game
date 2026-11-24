@@ -9,7 +9,7 @@
     constructor(stage, surface, hooks) {
       this.stage = stage;
       this.surface = surface;   // 터치를 받는 요소
-      this.hooks = hooks;       // { onScore(cm), onEnd(result) }
+      this.hooks = hooks;       // { onScore(cm), onTime(remainSec), onEnd(result) }
       this.state = 'idle';
       this.gen = 0;
       this._bind();
@@ -48,6 +48,7 @@
       this.stage.setRamen(ramen);
       this.stage.setMode('play');
       this.hooks.onScore(0);
+      this.hooks.onTime && this.hooks.onTime(C.timeLimit);
       NG.Sound.setTremble(0);
     }
 
@@ -132,6 +133,7 @@
       this.stage.tension = this.tension;
       this.stage.height = this.length * C.worldPerCm;
 
+      if (this.hooks.onTime) this.hooks.onTime(Math.max(0, C.timeLimit - this.elapsed));
       this._feedback(dt);
 
       if (this.tension >= C.stages.snap) return this._end('snap');

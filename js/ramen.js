@@ -38,7 +38,7 @@ NG.RAMEN = [
     toppings: ['veggie'],
   },
   {
-    id: 'bulldak', name: '불닭볶음면', stars: 5, desc: '조금만 빠르게 당겨도 심하게 떨리는 면발',
+    id: 'bulldak', name: '매운 볶음면', stars: 5, desc: '아주 미세한 속도 변화에도 바들바들 떨리는 면발',
     soup: false,
     broth: '#D4401D', brothDeep: '#B9310F',
     noodle: '#E8702A',
